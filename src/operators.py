@@ -278,6 +278,10 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
                 "Jh": [approx.metadata["Jh"].squeeze() for approx in approxes],
                 "|w|": [approx.weight.norm().item() for approx in approxes],
                 "|b|": [approx.bias.norm().item() for approx in approxes],
+                "weights": [approx.weight.detach().cpu() for approx in approxes],
+                "biases": [approx.bias.detach().cpu() for approx in approxes],
+                "hs": [approx.h.detach().cpu() for approx in approxes],
+                "zs": [approx.z.detach().cpu() for approx in approxes],
             },
         )
 
