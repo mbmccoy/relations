@@ -2,7 +2,7 @@ import itertools
 import logging
 import random
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, List, Literal
 
 from src import data, functional, models
 from src.utils.typing import Layer
@@ -214,7 +214,11 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
     beta: float | None = None
     rank: int | None = None  # If None, don't do low rank approximation.
 
-    def __call__(self, relation: data.Relation) -> LinearRelationOperator:
+    def __call__(
+        self, 
+        relation: data.Relation, 
+        examples: List[data.RelationSample] | None = None,
+    ) -> LinearRelationOperator:
         _check_nonempty(
             samples=relation.samples, prompt_templates=relation.prompt_templates
         )
@@ -222,6 +226,8 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
 
         samples = relation.samples
         prompt_template = relation.prompt_templates[0]
+        if examples is None:
+            examples = samples
 
         approxes = []
         for sample in samples:
