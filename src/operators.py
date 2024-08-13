@@ -227,6 +227,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
         samples = relation.samples
         prompt_template = relation.prompt_templates[0]
         if examples is None:
+            # Note: Deduplicated in make_prompt
             examples = samples
 
         approxes = []
@@ -235,7 +236,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
                 mt=self.mt,
                 prompt_template=prompt_template,
                 subject=sample.subject,
-                examples=samples,
+                examples=samples + examples,
             )
             logger.debug("estimating J for prompt:\n" + prompt)
 
