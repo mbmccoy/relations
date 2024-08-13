@@ -217,7 +217,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
     def __call__(
         self, 
         relation: data.Relation, 
-        examples: List[data.RelationSample] | None = None,
+        examples: data.Relation | None = None,
     ) -> LinearRelationOperator:
         _check_nonempty(
             samples=relation.samples, prompt_templates=relation.prompt_templates
@@ -228,7 +228,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
         prompt_template = relation.prompt_templates[0]
         if examples is None:
             # Note: Deduplicated in make_prompt
-            examples = samples
+            examples = relation
 
         approxes = []
         for sample in samples:
@@ -237,7 +237,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
                 mt=self.mt,
                 prompt_template=prompt_template,
                 subject=sample.subject,
-                examples=examples,
+                examples=examples.samples,
             )
             logger.debug("estimating J for prompt:\n" + prompt)
 
