@@ -237,7 +237,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
                 mt=self.mt,
                 prompt_template=prompt_template,
                 subject=sample.subject,
-                examples=samples + examples,
+                examples=examples,
             )
             logger.debug("estimating J for prompt:\n" + prompt)
 
