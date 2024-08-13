@@ -232,6 +232,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
 
         approxes = []
         for sample in samples:
+            logger.debug(f"training on {sample} with examples {examples}")
             prompt = functional.make_prompt(
                 mt=self.mt,
                 prompt_template=prompt_template,
