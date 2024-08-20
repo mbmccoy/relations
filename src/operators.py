@@ -57,6 +57,7 @@ class LinearRelationOperator(RelationOperator):
         subject: str,
         k: int = 5,
         h: torch.Tensor | None = None,
+        examples: data.Relation | None = None,
         **kwargs: Any,
     ) -> LinearRelationOutput:
         """Predict the top-k objects for a given subject.
@@ -76,7 +77,10 @@ class LinearRelationOperator(RelationOperator):
 
         if h is None:
             prompt = functional.make_prompt(
-                mt=self.mt, prompt_template=self.prompt_template, subject=subject
+                mt=self.mt, 
+                prompt_template=self.prompt_template, 
+                subject=subject,
+                examples=examples.samples if examples is not None else None,
             )
             logger.debug(f'computing h from prompt "{prompt}"')
 
