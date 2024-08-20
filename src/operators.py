@@ -273,7 +273,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
         prompt_template_icl = functional.make_prompt(
             mt=self.mt,
             prompt_template=prompt_template,
-            examples=samples,
+            examples=examples.samples,
             subject="{}",
         )
 
