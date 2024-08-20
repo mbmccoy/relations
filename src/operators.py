@@ -231,6 +231,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
             examples = relation
 
         approxes = []
+        prompts = []
         for sample in samples:
             logger.debug(f"training on {sample} with examples {examples}")
             prompt = functional.make_prompt(
@@ -258,6 +259,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
                 inputs=inputs,
             )
             approxes.append(approx)
+            prompts.append(prompt)
 
         weight = torch.stack([approx.weight for approx in approxes]).mean(dim=0)
         bias = torch.stack([approx.bias for approx in approxes]).mean(dim=0)
@@ -290,6 +292,9 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
                 "biases": [approx.bias.detach().cpu() for approx in approxes],
                 "hs": [approx.h.detach().cpu() for approx in approxes],
                 "zs": [approx.z.detach().cpu() for approx in approxes],
+                "prompt_template": prompt_template_icl,
+                "prompts": prompts,
+                "samples": [sample.subject for sample in samples],
             },
         )
 
