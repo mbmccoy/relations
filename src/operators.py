@@ -2,7 +2,7 @@ import itertools
 import logging
 import random
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, List, Literal
 
 from src import data, functional, models
 from src.utils.typing import Layer
@@ -57,6 +57,7 @@ class LinearRelationOperator(RelationOperator):
         subject: str,
         k: int = 5,
         h: torch.Tensor | None = None,
+        examples: data.Relation | None = None,
         **kwargs: Any,
     ) -> LinearRelationOutput:
         """Predict the top-k objects for a given subject.
@@ -76,7 +77,10 @@ class LinearRelationOperator(RelationOperator):
 
         if h is None:
             prompt = functional.make_prompt(
-                mt=self.mt, prompt_template=self.prompt_template, subject=subject
+                mt=self.mt, 
+                prompt_template=self.prompt_template, 
+                subject=subject,
+                examples=examples.samples if examples is not None else None,
             )
             logger.debug(f'computing h from prompt "{prompt}"')
 
@@ -214,7 +218,11 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
     beta: float | None = None
     rank: int | None = None  # If None, don't do low rank approximation.
 
-    def __call__(self, relation: data.Relation) -> LinearRelationOperator:
+    def __call__(
+        self, 
+        relation: data.Relation, 
+        examples: data.Relation | None = None,
+    ) -> LinearRelationOperator:
         _check_nonempty(
             samples=relation.samples, prompt_templates=relation.prompt_templates
         )
@@ -222,14 +230,19 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
 
         samples = relation.samples
         prompt_template = relation.prompt_templates[0]
+        if examples is None:
+            # Note: Deduplicated in make_prompt
+            examples = relation
 
         approxes = []
+        prompts = []
         for sample in samples:
+            logger.debug(f"training on {sample} with examples {examples}")
             prompt = functional.make_prompt(
                 mt=self.mt,
                 prompt_template=prompt_template,
                 subject=sample.subject,
-                examples=samples,
+                examples=examples.samples,
             )
             logger.debug("estimating J for prompt:\n" + prompt)
 
@@ -250,6 +263,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
                 inputs=inputs,
             )
             approxes.append(approx)
+            prompts.append(prompt)
 
         weight = torch.stack([approx.weight for approx in approxes]).mean(dim=0)
         bias = torch.stack([approx.bias for approx in approxes]).mean(dim=0)
@@ -259,7 +273,7 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
         prompt_template_icl = functional.make_prompt(
             mt=self.mt,
             prompt_template=prompt_template,
-            examples=samples,
+            examples=examples.samples,
             subject="{}",
         )
 
@@ -278,6 +292,13 @@ class JacobianIclMeanEstimator(LinearRelationEstimator):
                 "Jh": [approx.metadata["Jh"].squeeze() for approx in approxes],
                 "|w|": [approx.weight.norm().item() for approx in approxes],
                 "|b|": [approx.bias.norm().item() for approx in approxes],
+                "weights": [approx.weight.detach().cpu() for approx in approxes],
+                "biases": [approx.bias.detach().cpu() for approx in approxes],
+                "hs": [approx.h.detach().cpu() for approx in approxes],
+                "zs": [approx.z.detach().cpu() for approx in approxes],
+                "prompt_template": prompt_template_icl,
+                "prompts": prompts,
+                "samples": [sample.subject for sample in samples],
             },
         )
 
