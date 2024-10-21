@@ -14,15 +14,9 @@ if [[ -z "$UID" || -z "$GID" ]]; then
   exit 1
 fi
 
-# Create a user with the provided UID and GID
+# Set permissions for the workspace directory
 USER_ID=${UID:-1000}
 GROUP_ID=${GID:-1000}
-
-# Add group and user with UID/GID passed in from docker-compose
-groupadd -g $GROUP_ID usergroup
-useradd -m -u $USER_ID -g usergroup -s /bin/bash user
-
-# Set permissions for the workspace directory
 chown -R $USER_ID:$GROUP_ID /workspace
 
 # Set Jupyter runtime, config, and data directories to locations writable by the user
@@ -33,4 +27,4 @@ mkdir -p $JUPYTER_RUNTIME_DIR $JUPYTER_CONFIG_DIR $JUPYTER_DATA_DIR
 chown -R $USER_ID:$GROUP_ID /workspace/.jupyter
 
 # Run the command as the specified user, preserving the environment
-exec sudo -E -u user env JUPYTER_RUNTIME_DIR=$JUPYTER_RUNTIME_DIR JUPYTER_CONFIG_DIR=$JUPYTER_CONFIG_DIR JUPYTER_DATA_DIR=$JUPYTER_DATA_DIR "$@"
+exec env JUPYTER_RUNTIME_DIR=$JUPYTER_RUNTIME_DIR JUPYTER_CONFIG_DIR=$JUPYTER_CONFIG_DIR JUPYTER_DATA_DIR=$JUPYTER_DATA_DIR "$@"
