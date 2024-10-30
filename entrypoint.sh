@@ -8,7 +8,7 @@ if [[ -z "$UID" || -z "$GID" || -z "$USER" || -z "$JUPYTER_PORT" ]]; then
   echo -e "\e[32m1. Pass UID, GID, and USER when calling docker-compose, e.g.,\e[0m"
   echo -e "\e[32m   UID=\$(id -u) GID=\$(id -g) USER=\$(id -un) docker-compose up\e[0m"
   echo -e "\e[32m2. Run the following one-liner to add them to the .env file:\e[0m"
-  echo -e "\e[32m   echo -e \"UID=\$(id -u)\\nGID=\$(id -g)\\nUSER=\$(id -un)\\\\JUPYTER_PORT=$(( $(id -u) + 10000 ))\" >> .env\e[0m"
+  echo -e "\e[32m   echo -e \"UID=\$(id -u)\\nGID=\$(id -g)\\nUSER=\$(id -un)\\\\JUPYTER_PORT=\$(( \$(id -u) + 10000 ))\" >> .env\e[0m"
   echo -e "\e[31mExiting now.\e[0m"
   exit 1
 fi
@@ -39,4 +39,6 @@ fi
 # Run the command as the specified user, preserving the environment
 exec su - $USERNAME -c "env JUPYTER_RUNTIME_DIR=$JUPYTER_RUNTIME_DIR \
     JUPYTER_CONFIG_DIR=$JUPYTER_CONFIG_DIR \
-    JUPYTER_DATA_DIR=$JUPYTER_DATA_DIR $*"
+    JUPYTER_DATA_DIR=$JUPYTER_DATA_DIR \
+    PYTHONPATH=$PYTHONPATH \
+    $*"

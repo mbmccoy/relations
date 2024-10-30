@@ -1,6 +1,11 @@
 git+https://github.com/davidbau/baukit
 accelerate
 dataclasses-json
+protobuf 
+types-requests 
+h5py
+python-dotenv
+statsmodels
 # TODO(evan): Needed?
 huggingface-hub
 invoke

@@ -38,6 +38,7 @@ services:
       - UID=${UID}
       - GID=${GID}
       - USER=${USER}
+      - PYTHONPATH=/workspace
     command: |
       jupyter lab
         --ip=0.0.0.0

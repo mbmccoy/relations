@@ -1,0 +1,193 @@
+{
+    "name": "has_color",
+    "prompt_templates_zs": [
+        "On the outside, the color of {} is"
+    ],
+    "prompt_templates": [
+        "On the outside, the color of {} is"
+    ],
+    "properties": {
+        "relation_type": "commonsense_new",
+        "domain_name": "objects",
+        "range_name": "color",
+        "symmetric": "false"
+    },
+    "samples": [
+        {
+            "subject": "a barn",
+            "object": "red"
+        },
+        {
+            "subject": "a barrel",
+            "object": "brown"
+        },
+        {
+            "subject": "a bathtub",
+            "object": "white"
+        },
+        {
+            "subject": "a brick",
+            "object": "red"
+        },
+        {
+            "subject": "an emerald",
+            "object": "green"
+        },
+        {
+            "subject": "a spoon",
+            "object": "silver"
+        },
+        {
+            "subject": "a stone",
+            "object": "grey"
+        },
+        {
+            "subject": "a toilet",
+            "object": "white"
+        },
+        {
+            "subject": "a trumpet",
+            "object": "gold"
+        },
+        {
+            "subject": "a tuba",
+            "object": "gold"
+        },
+        {
+            "subject": "a wagon",
+            "object": "red"
+        },
+        {
+            "subject": "a cauliflower",
+            "object": "white"
+        },
+        {
+            "subject": "a carrot",
+            "object": "orange"
+        },
+        {
+            "subject": "celery",
+            "object": "green"
+        },
+        {
+            "subject": "corn",
+            "object": "yellow"
+        },
+        {
+            "subject": "a cucumber",
+            "object": "green"
+        },
+        {
+            "subject": "lettuce",
+            "object": "green"
+        },
+        {
+            "subject": "a pumpkin",
+            "object": "orange"
+        },
+        {
+            "subject": "spinach",
+            "object": "green"
+        },
+        {
+            "subject": "a zucchini",
+            "object": "green"
+        },
+        {
+            "subject": "asparagus",
+            "object": "green"
+        },
+        {
+            "subject": "broccoli",
+            "object": "green"
+        },
+        {
+            "subject": "a cherry",
+            "object": "red"
+        },
+        {
+            "subject": "a cranberry",
+            "object": "red"
+        },
+        {
+            "subject": "an eggplant",
+            "object": "purple"
+        },
+        {
+            "subject": "a lemon",
+            "object": "yellow"
+        },
+        {
+            "subject": "a lime",
+            "object": "green"
+        },
+        {
+            "subject": "a mandarin",
+            "object": "orange"
+        },
+        {
+            "subject": "a pineapple",
+            "object": "yellow"
+        },
+        {
+            "subject": "a plum",
+            "object": "purple"
+        },
+        {
+            "subject": "a raspberry",
+            "object": "red"
+        },
+        {
+            "subject": "a strawberry",
+            "object": "red"
+        },
+        {
+            "subject": "a tomato",
+            "object": "red"
+        },
+        {
+            "subject": "a turtle",
+            "object": "green"
+        },
+        {
+            "subject": "a crocodile",
+            "object": "green"
+        },
+        {
+            "subject": "a frog",
+            "object": "green"
+        },
+        {
+            "subject": "a dove",
+            "object": "white"
+        },
+        {
+            "subject": "a canary",
+            "object": "yellow"
+        },
+        {
+            "subject": "a crow",
+            "object": "black"
+        },
+        {
+            "subject": "a flamingo",
+            "object": "pink"
+        },
+        {
+            "subject": "a beaver",
+            "object": "brown"
+        },
+        {
+            "subject": "a goat",
+            "object": "white"
+        },
+        {
+            "subject": "a fox",
+            "object": "red"
+        },
+        {
+            "subject": "a panther",
+            "object": "black "
+        }
+    ]
+}

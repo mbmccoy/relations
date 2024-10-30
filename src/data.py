@@ -245,6 +245,17 @@ def get_relation_fn_type(relation_dict: dict) -> RelationFnType:
 
 def load_relation_dict(file: PathLike) -> dict:
     """Load dict for a single relation from a json file."""
+
+    # Wrap in try/except to provide more informative error messages
+    try:
+        return _load_relation_dict(file)
+    except Exception as e:
+        logger.error(f"error loading relation file {file}: {e}")
+        raise
+
+
+def _load_relation_dict(file: PathLike) -> dict:
+    """Load dict for a single relation from a json file."""
     file = Path(file)
     if file.suffix != ".json":
         raise ValueError(f"relation files must be json, got: {file}")
@@ -271,7 +282,11 @@ def load_relation_dict(file: PathLike) -> dict:
 
 def load_relation(file: PathLike) -> Relation:
     """Load a single relation from a json file."""
-    return Relation.from_dict(load_relation_dict(file))
+    try:
+        return Relation.from_dict(load_relation_dict(file))
+    except Exception as e:
+        logger.error(f"error loading relation file {file}: {e}")
+        raise
 
 
 def load_dataset(*paths: PathLike) -> RelationDataset:

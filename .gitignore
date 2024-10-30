@@ -149,3 +149,6 @@ scan-for-best*
 
 # data
 .jupyter
+
+# Pytorch model checkpoints
+*.pt
