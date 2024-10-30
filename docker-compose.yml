@@ -33,16 +33,16 @@ services:
     volumes:
       - .:/workspace:z
     ports:
-      - "9999:9999"
+      - "${JUPYTER_PORT}:9999"
     environment:
       - UID=${UID}
       - GID=${GID}
+      - USER=${USER}
     command: |
       jupyter lab
-        --allow-root
         --ip=0.0.0.0
         --port=9999 
         --NotebookApp.use_redirect_file=False
         --no-browser
         --notebook-dir=/workspace/notebooks
-        --NotebookApp.custom_display_url="http://localhost:9999"
+        --NotebookApp.custom_display_url="http://localhost:${JUPYTER_PORT}"
